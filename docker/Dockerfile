@@ -14,13 +14,13 @@ RUN \
 # stage 2, only necessary files
 FROM python:3.8-alpine
 WORKDIR /scout
+COPY ./bin/setup_aws.sh /tmp
+COPY --from=builder /scout /scout
 RUN \
   apk update --no-cache && \
   apk upgrade --no-cache && \
-  rm -rf /var/cache/apk/*
-COPY --from=builder /scout /scout
-COPY ./bin/setup_aws.sh /tmp
-RUN ["/bin/sh", "-c", "/tmp/setup_aws.sh"]
-RUN ["/bin/sh", "-c", "rm -f /tmp/setup_aws.sh"]
+  /tmp/setup_aws.sh && \
+  rm -vf /tmp/setup_aws.sh
 ENV PATH="/scout/.venv/bin:$PATH"
+ENV AWS_CONFIG_FILE="/scout/.aws/config"
 CMD ["/bin/sh"]

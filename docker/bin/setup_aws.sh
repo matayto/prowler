@@ -6,8 +6,8 @@ if [ ! -d ${AWSDIR} ]; then
 
     # create the config template
     cat <<'EOF' >${AWSDIR}/config
-    [default]
-    region = us-east-1
-    output = json
+[default]
+region = us-east-1
+output = json
 EOF
 fi
